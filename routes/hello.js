@@ -7,12 +7,50 @@ const router = express.Router();
 
 // /hello以下の相対アドレスを第一引数で指定して/hello～のアクセスがあった場合に分岐させる
 router.get('/', function(req, res, next) {
-    let msg = "Enter something";
+    let msg = "Nothing";
 
     if(req.session.message != undefined){
-        msg =  "Last Message: " + req.session.message
+        msg = req.session.message
     }
 
+    const data = {
+        title: "Hello!",
+        lastMessage: msg,
+    }
+
+    res.render('hello', data);
+
+});
+
+//POSTアクセスの処理を行う　例：formから送信
+router.post('/post' ,(req, res, next) => {
+    //POST送信された値はreq.bodyにオブジェクトとしてまとめられている
+    console.log(req.body);
+    msg = req.body["message"];
+    req.session.message = msg;
+    console.log(req.session.message);
+    const data = {
+        title: "Hello!",
+        lastMessage: msg,
+    }
+
+    res.render('hello', data);
+})
+
+// /postのgetアクセス処理
+router.get('/post' ,(req, res, next) => {
+    console.log(req.session.message);
+    const data = {
+        title: "Hello!",
+        lastMessage: msg,
+        content: null
+    }
+
+    res.render('hello', data);
+})
+
+//googlenewsのルーティング処理
+router.get('/ggn' ,(req, res, next) => {
     let opt = {
         host: 'news.google.com',
         port: 443,
@@ -30,46 +68,12 @@ router.get('/', function(req, res, next) {
                 let data = {
                     title: "Google News",
                     content: result.rss.channel[0].item,
-                    lastMessage: msg
                 };
-                res.render('hello', data);
+                res.render('google_news', data);
             })
         })
     }
     );
-
-
-
-    
-
-});
-
-//POSTアクセスの処理を行う　例：formから送信
-router.post('/post' ,(req, res, next) => {
-    //POST送信された値はreq.bodyにオブジェクトとしてまとめられている
-    console.log(req.body);
-    msg = req.body["message"];
-    req.session.message = msg;
-    console.log(req.session.message);
-    const data = {
-        title: "Hello!",
-        lastMessage: msg,
-        content:null
-    }
-
-    res.render('hello', data);
-})
-
-// /postのgetアクセス処理
-router.get('/post' ,(req, res, next) => {
-    console.log(req.session.message);
-    const data = {
-        title: "Hello!",
-        lastMessage: msg,
-        content: null
-    }
-
-    res.render('hello', data);
 })
 
 module.exports = router;
