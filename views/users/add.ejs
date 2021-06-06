@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="content-type" content="text/html">
+    <title><%=title %></title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" crossorigin="anonymous">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+
+<body class="container">
+
+    <header>
+        <h1 class="display-4">
+            <%=title %></h1>
+    </header>
+    <div role="main">
+        <ol class="text-danger">
+        <% if(err!=null) { for(const getedErr of err.errors) { %>
+            <li><%= getedErr.message %></li>
+            <% }} %>
+        </ol>
+        <form method="post" action="/users/add">
+        <div class="form-group">
+            <label for="name">NAME</label>
+            <input type="text" name="name" id="name" class="form-control">
+            <ul class="text-danger">
+                <% if(err!=null) { for(const getedErr of err.get("name")) { %>
+                    <li><%= getedErr.message %></li>
+                    <% }} %>
+                </ul>
+        </div>
+        <div class="form-group">
+            <label for="mail">PASSWORD</label>
+            <td><input type="text" name="password" id="password"  class="form-control"></td>
+            <ul class="text-danger">
+                <% if(err!=null) { for(const getedErr of err.get("pass")) { %>
+                    <li><%= getedErr.message %></li>
+                    <% }} %>
+                </ul>
+        </div>
+        <div class="form-group">
+            <label for="mail">MAIL</label>
+            <td><input type="text" name="mail" id="mail"  class="form-control"></td>
+            <ul class="text-danger">
+                <% if(err!=null) { for(const getedErr of err.get("mail")) { %>
+                    <li><%= getedErr.message %></li>
+                    <% }} %>
+                </ul>
+        </div>
+        <div class="form-group">
+            <label for="age">AGE</label>
+            <td><input type="number" name="age" id="age" class="form-control"></td>
+            <ul class="text-danger">
+                <% if(err!=null) { for(const getedErr of err.get("age")) { %>
+                    <li><%= getedErr.message %></li>
+                    <% }} %>
+                </ul>
+        </div>
+        <input type="submit" value="作成" class="btn btn-primary">
+    </form>
+    </div>
+    
+</body>
+</html>
